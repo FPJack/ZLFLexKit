@@ -163,8 +163,8 @@
     [box addArrangedSubview:[self label:@"⑧ addViewMake / addViewIfMake — 闭包懒创建 view"]];
     ZLStackView *sv8 = [self makeStack:56];
     sv8
-        .setJustify(ZLJustifySpaceAround)
-        .setAlign(ZLFlexItemCrossAlignCenter)
+        .justifySpaceAround
+        .alignCenter
         .addViewMake(^UIView *(ZLStackView *sv) {
             return [self box:UIColor.systemPurpleColor text:@"make①" w:64 h:36];
         })
