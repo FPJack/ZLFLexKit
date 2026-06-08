@@ -1,5 +1,4 @@
 import XCTest
-import ZLFlexKit
 
 class Tests: XCTestCase {
     

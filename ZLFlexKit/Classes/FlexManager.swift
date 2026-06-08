@@ -1,0 +1,492 @@
+//
+//  FlexManager.swift
+//  ZLFlexKit
+//
+//  Created by admin on 2026/6/5.
+//
+
+import UIKit
+
+final class FlexManager {
+
+    weak var stackView: StackView?
+
+    private(set) var constraints: [NSLayoutConstraint] = []
+
+    // MARK: - Private lazy StackEdgeInsets
+
+    lazy private var stackEdgeInsets: StackEdgeInsets =  {
+        let insets = StackEdgeInsets()
+        insets.stackView = self.stackView
+        return insets
+    }()
+
+    // MARK: - Convenience accessors
+
+    private var views: [UIView] {
+        stackView?.arrangedViews ?? []
+    }
+
+    private var justify: Justify {
+        stackView?.justifyContent ?? .fill
+    }
+
+    private var align: FlexItemCrossAlign {
+        stackView?.alignment ?? .center
+    }
+
+    private var horizontal: Bool {
+        stackView?.axis == .horizontal
+    }
+
+    // MARK: - Layout
+
+    func removeAllSpacing() {
+        stackEdgeInsets.removeEdgeInsets()
+        stackView?.layoutGuides
+            .compactMap { $0 as? LayoutGuide }
+            .forEach { $0.removeFromOwningView() }
+    }
+
+    // MARK: - Horizontal
+
+    func addHorizontalLayoutConstraints() {
+        guard horizontal else { return }
+        let views = self.views
+        let count = views.count
+        var nextXAnchor: NSLayoutXAxisAnchor = stackEdgeInsets.jLeadingAnchor
+        var widthDim:     NSLayoutDimension?   // for spaceBetween/Around/Evenly
+        var viewWidthDim: NSLayoutDimension?   // for fillEqually
+        var flexWidthDim: NSLayoutDimension?   // for flex spaces
+        var flexViews:    [UIView] = []
+
+        let fittingLow = UILayoutPriority(rawValue: UILayoutPriority.fittingSizeLevel.rawValue / 2.0)
+        
+        let noIntrinsic = CGSize(width: UIViewNoIntrinsicMetric, height: UIViewNoIntrinsicMetric)
+
+        for i in 0 ..< count {
+            let view = views[i]
+            view.translatesAutoresizingMaskIntoConstraints = false
+
+            // 垂直方向设置低优先级高度约束防止过度压缩
+            if align != .fill, view.intrinsicContentSize == noIntrinsic {
+                let c = view.heightAnchor.constraint(equalToConstant: 0)
+                c.priority = fittingLow
+                constraints.append(c)
+            }
+
+            let cfg = view.flex
+            if cfg.flex > 0, justify != .fillEqually {
+                flexViews.append(view)
+            }
+
+            let startSpacing = cfg.startMarge
+            let endSpacing   = cfg.endMarge
+            let spacing      = cfg.spacing
+
+            // 交叉轴约束
+            addCrossAxisConstraints(
+                for: view, cfg: cfg,
+                startSpacing: startSpacing, endSpacing: endSpacing,
+                startAnchor: stackEdgeInsets.topAnchor,
+                endAnchor:   stackEdgeInsets.bottomAnchor,
+                centerAnchor: stackEdgeInsets.centerYAnchor,
+                mainAxis: .horizontal
+            )
+
+            // 主轴起始约束
+            let leadingCon: NSLayoutConstraint
+            if justify == .end, i == 0 {
+                leadingCon = view.leadingAnchor.constraint(greaterThanOrEqualTo: nextXAnchor, constant: 0)
+            } else {
+                leadingCon = view.leadingAnchor.constraint(equalTo: nextXAnchor, constant: 0)
+            }
+            constraints.append(leadingCon)
+            nextXAnchor = view.trailingAnchor
+
+            // fillEqually: 宽度相等
+            if justify == .fillEqually {
+                if let dim = viewWidthDim {
+                    constraints.append(view.widthAnchor.constraint(equalTo: dim))
+                }
+                viewWidthDim = view.widthAnchor
+            }
+
+            // fill / fillEqually: 弹性空间
+            if (justify == .fill || justify == .fillEqually), cfg.isFlexibleSpace {
+                let guide = LayoutGuide()
+                guide.stackView = stackView
+                constraints.append(guide.leadingAnchor.constraint(equalTo: nextXAnchor))
+                nextXAnchor = guide.trailingAnchor
+                constraints.append(guide.widthAnchor.constraint(greaterThanOrEqualToConstant: 0))
+                if let dim = flexWidthDim {
+                    constraints.append(dim.constraint(equalTo: guide.widthAnchor))
+                }
+                flexWidthDim = guide.widthAnchor
+            }
+
+            // start / end / center / fill / fillEqually: 固定间距
+            let spacingCases: [Justify] = [.start, .end, .center, .fill, .fillEqually]
+            if spacingCases.contains(justify), i < count - 1 {
+                if spacing >= 0 || cfg._minSpacing > 0 || cfg._maxSpacing > 0 {
+                    let guide = LayoutGuide()
+                    guide.stackView = stackView
+                    constraints.append(guide.leadingAnchor.constraint(equalTo: nextXAnchor))
+                    nextXAnchor = guide.trailingAnchor
+
+                    var spacingFlag = true
+                    if cfg._minSpacing > 0 {
+                        let c1 = guide.widthAnchor.constraint(greaterThanOrEqualToConstant: cfg._minSpacing)
+                        c1.item.type = .minSpacing; c1.item.view = view
+                        constraints.append(c1)
+                        let c2 = guide.widthAnchor.constraint(equalToConstant: cfg._minSpacing)
+                        c2.item.type = .minSpacing; c2.item.view = view
+                        c2.priority = fittingLow
+                        constraints.append(c2)
+                        if spacing < cfg._minSpacing { spacingFlag = false }
+                    }
+                    if cfg._maxSpacing > 0 {
+                        let c1 = guide.widthAnchor.constraint(lessThanOrEqualToConstant: cfg._maxSpacing)
+                        c1.item.type = .maxSpacing; c1.item.view = view
+                        constraints.append(c1)
+                        let c2 = guide.widthAnchor.constraint(equalToConstant: 0)
+                        c2.item.type = .maxSpacing; c2.item.view = view
+                        c2.priority = fittingLow
+                        constraints.append(c2)
+                        if spacing > cfg._maxSpacing { spacingFlag = false }
+                    }
+                    if spacingFlag, spacing >= 0 {
+                        let c = guide.widthAnchor.constraint(equalToConstant: spacing)
+                        c.item.type = .spacing; c.item.view = view
+                        constraints.append(c)
+                    }
+                }
+            }
+
+            // spaceBetween / spaceAround / spaceEvenly: 均等间距
+            if [Justify.spaceBetween, .spaceAround, .spaceEvenly].contains(justify), i < count - 1 {
+                let guide = LayoutGuide()
+                guide.stackView = stackView
+                constraints.append(guide.leadingAnchor.constraint(equalTo: nextXAnchor))
+                nextXAnchor = guide.trailingAnchor
+                if let dim = widthDim {
+                    constraints.append(guide.widthAnchor.constraint(equalTo: dim))
+                }
+                widthDim = guide.widthAnchor
+            }
+        }
+
+        // 末尾约束
+        if justify == .start {
+            constraints.append(nextXAnchor.constraint(lessThanOrEqualTo: stackEdgeInsets.jTrailingAnchor, constant: 0))
+        } else {
+            constraints.append(nextXAnchor.constraint(equalTo: stackEdgeInsets.jTrailingAnchor, constant: 0))
+        }
+
+        // spaceAround / spaceEvenly 边距关系
+        if let dim = widthDim {
+            let anchors = stackEdgeInsets.widthAnchors
+            if let first = anchors.first, let last = anchors.last {
+                constraints.append(first.constraint(equalTo: last))
+                if justify == .spaceAround {
+                    constraints.append(first.constraint(equalTo: dim, multiplier: 0.5))
+                } else if justify == .spaceEvenly {
+                    constraints.append(first.constraint(equalTo: dim))
+                }
+            }
+        }
+
+        // center justify 两边宽度相等
+        if justify == .center {
+            let anchors = stackEdgeInsets.widthAnchors
+            if let first = anchors.first, let last = anchors.last {
+                constraints.append(first.constraint(equalTo: last))
+            }
+        }
+
+        // align center 上下高度相等
+        if align == .center {
+            let anchors = stackEdgeInsets.heightAnchors
+            if let first = anchors.first, let last = anchors.last {
+                constraints.append(first.constraint(equalTo: last))
+            }
+        }
+
+        // flex 相对宽度权重
+        applyFlexWeights(flexViews, axis: .horizontal)
+    }
+
+    // MARK: - Vertical
+
+    func addVerticalLayoutConstraints() {
+        guard !horizontal else { return }
+        let views = self.views
+        let count = views.count
+        var nextYAnchor: NSLayoutYAxisAnchor = stackEdgeInsets.jTopAnchor
+        var heightDim:     NSLayoutDimension?
+        var viewHeightDim: NSLayoutDimension?
+        var flexHeightDim: NSLayoutDimension?
+        var flexViews:     [UIView] = []
+
+        let fittingLow = UILayoutPriority(rawValue: UILayoutPriority.fittingSizeLevel.rawValue / 2.0)
+        let noIntrinsic = CGSize(width: UIViewNoIntrinsicMetric, height: UIViewNoIntrinsicMetric)
+
+        for i in 0 ..< count {
+            let view = views[i]
+            view.translatesAutoresizingMaskIntoConstraints = false
+
+            // 水平方向低优先级宽度约束
+            if align != .fill, view.intrinsicContentSize == noIntrinsic {
+                let c = view.widthAnchor.constraint(equalToConstant: 0)
+                c.priority = fittingLow
+                constraints.append(c)
+            }
+
+            let cfg = view.flex
+            if cfg.flex > 0, justify != .fillEqually {
+                flexViews.append(view)
+            }
+
+            let startSpacing = cfg.startMarge
+            let endSpacing   = cfg.endMarge
+            let spacing      = cfg.spacing
+
+            // 交叉轴约束
+            addCrossAxisConstraints(
+                for: view, cfg: cfg,
+                startSpacing: startSpacing, endSpacing: endSpacing,
+                startAnchor: stackEdgeInsets.leadingAnchor,
+                endAnchor:   stackEdgeInsets.trailingAnchor,
+                centerAnchor: stackEdgeInsets.centerXAnchor,
+                mainAxis: .vertical
+            )
+
+            // 主轴起始约束
+            let topCon: NSLayoutConstraint
+            if justify == .end, i == 0 {
+                topCon = view.topAnchor.constraint(greaterThanOrEqualTo: nextYAnchor, constant: 0)
+            } else {
+                topCon = view.topAnchor.constraint(equalTo: nextYAnchor, constant: 0)
+            }
+            constraints.append(topCon)
+            nextYAnchor = view.bottomAnchor
+
+            // fillEqually: 高度相等
+            if justify == .fillEqually {
+                if let dim = viewHeightDim {
+                    constraints.append(view.heightAnchor.constraint(equalTo: dim))
+                }
+                viewHeightDim = view.heightAnchor
+            }
+
+            // fill / fillEqually: 弹性空间
+            if (justify == .fill || justify == .fillEqually), cfg.isFlexibleSpace {
+                let guide = LayoutGuide()
+                guide.stackView = stackView
+                constraints.append(guide.topAnchor.constraint(equalTo: nextYAnchor))
+                nextYAnchor = guide.bottomAnchor
+                constraints.append(guide.heightAnchor.constraint(greaterThanOrEqualToConstant: 0))
+                if let dim = flexHeightDim {
+                    constraints.append(dim.constraint(equalTo: guide.heightAnchor))
+                }
+                flexHeightDim = guide.heightAnchor
+            }
+
+            // start / end / center / fill / fillEqually: 固定间距
+            let spacingCases: [Justify] = [.start, .end, .center, .fill, .fillEqually]
+            if spacingCases.contains(justify), i < count - 1 {
+                if spacing >= 0 || cfg._minSpacing > 0 || cfg._maxSpacing > 0 {
+                    let guide = LayoutGuide()
+                    guide.stackView = stackView
+                    constraints.append(guide.topAnchor.constraint(equalTo: nextYAnchor))
+                    nextYAnchor = guide.bottomAnchor
+
+                    var spacingFlag = true
+                    if cfg._minSpacing > 0 {
+                        let c1 = guide.heightAnchor.constraint(greaterThanOrEqualToConstant: cfg._minSpacing)
+                        c1.item.type = .minSpacing; c1.item.view = view
+                        constraints.append(c1)
+                        let c2 = guide.heightAnchor.constraint(equalToConstant: cfg._minSpacing)
+                        c2.item.type = .minSpacing; c2.item.view = view
+                        c2.priority = fittingLow
+                        constraints.append(c2)
+                        if spacing < cfg._minSpacing { spacingFlag = false }
+                    }
+                    if cfg._maxSpacing > 0 {
+                        let c1 = guide.heightAnchor.constraint(lessThanOrEqualToConstant: cfg._maxSpacing)
+                        c1.item.type = .maxSpacing; c1.item.view = view
+                        constraints.append(c1)
+                        let c2 = guide.heightAnchor.constraint(equalToConstant: 0)
+                        c2.item.type = .maxSpacing; c2.item.view = view
+                        c2.priority = fittingLow
+                        constraints.append(c2)
+                        if spacing > cfg._maxSpacing { spacingFlag = false }
+                    }
+                    if spacingFlag, spacing >= 0 {
+                        let c = guide.heightAnchor.constraint(equalToConstant: spacing)
+                        c.item.type = .spacing; c.item.view = view
+                        constraints.append(c)
+                    }
+                }
+            }
+
+            // spaceBetween / spaceAround / spaceEvenly: 均等间距
+            if [Justify.spaceBetween, .spaceAround, .spaceEvenly].contains(justify), i < count - 1 {
+                let guide = LayoutGuide()
+                guide.stackView = stackView
+                constraints.append(guide.topAnchor.constraint(equalTo: nextYAnchor))
+                nextYAnchor = guide.bottomAnchor
+                if let dim = heightDim {
+                    constraints.append(guide.heightAnchor.constraint(equalTo: dim))
+                }
+                heightDim = guide.heightAnchor
+            }
+        }
+
+        // 末尾约束
+        if justify == .start {
+            constraints.append(nextYAnchor.constraint(lessThanOrEqualTo: stackEdgeInsets.jBottomAnchor, constant: 0))
+        } else {
+            constraints.append(nextYAnchor.constraint(equalTo: stackEdgeInsets.jBottomAnchor, constant: 0))
+        }
+
+        // spaceAround / spaceEvenly 边距关系
+        if let dim = heightDim {
+            let anchors = stackEdgeInsets.heightAnchors
+            if let first = anchors.first, let last = anchors.last {
+                constraints.append(first.constraint(equalTo: last))
+                if justify == .spaceAround {
+                    constraints.append(first.constraint(equalTo: dim, multiplier: 0.5))
+                } else if justify == .spaceEvenly {
+                    constraints.append(first.constraint(equalTo: dim))
+                }
+            }
+        }
+
+        // center justify 上下高度相等
+        if justify == .center {
+            let anchors = stackEdgeInsets.heightAnchors
+            if let first = anchors.first, let last = anchors.last {
+                constraints.append(first.constraint(equalTo: last))
+            }
+        }
+
+        // align center 左右宽度相等
+        if align == .center {
+            let anchors = stackEdgeInsets.widthAnchors
+            if let first = anchors.first, let last = anchors.last {
+                constraints.append(first.constraint(equalTo: last))
+            }
+        }
+
+        // flex 相对高度权重
+        applyFlexWeights(flexViews, axis: .vertical)
+    }
+
+    // MARK: - Constraint Control
+
+    func activateConstraints() {
+        NSLayoutConstraint.activate(constraints)
+    }
+
+    func deactivateConstraints() {
+        NSLayoutConstraint.deactivate(constraints)
+        constraints.removeAll()
+    }
+
+    // MARK: - Insets
+
+    func updateInsets(_ insets: UIEdgeInsets) {
+        stackEdgeInsets.insets = insets
+    }
+
+    // MARK: - Private helpers
+
+    /// 交叉轴方向对齐约束（horizontal 时处理垂直方向，vertical 时处理水平方向）
+    private func addCrossAxisConstraints(
+        for view: UIView,
+        cfg: FlexItem,
+        startSpacing: CGFloat,
+        endSpacing: CGFloat,
+        startAnchor: NSLayoutYAxisAnchor,
+        endAnchor: NSLayoutYAxisAnchor,
+        centerAnchor: NSLayoutYAxisAnchor,
+        mainAxis: NSLayoutConstraint.Axis
+    ) {
+        func make(_ c: NSLayoutConstraint, type: LayoutConType) -> NSLayoutConstraint {
+            c.item.type = type; c.item.view = view; return c
+        }
+        switch cfg.alignSelf {
+        case .start:
+            constraints.append(make(view.topAnchor.constraint(equalTo: startAnchor, constant: startSpacing), type: .start))
+            constraints.append(make(view.bottomAnchor.constraint(lessThanOrEqualTo: endAnchor, constant: -endSpacing), type: .end))
+        case .center:
+            let offsetY = (startSpacing - endSpacing) * 0.5
+            constraints.append(make(view.topAnchor.constraint(greaterThanOrEqualTo: startAnchor, constant: startSpacing), type: .start))
+            constraints.append(make(view.bottomAnchor.constraint(lessThanOrEqualTo: endAnchor, constant: -endSpacing), type: .end))
+            constraints.append(make(view.centerYAnchor.constraint(equalTo: centerAnchor, constant: offsetY), type: .center))
+        case .end:
+            constraints.append(make(view.topAnchor.constraint(greaterThanOrEqualTo: startAnchor, constant: startSpacing), type: .start))
+            constraints.append(make(view.bottomAnchor.constraint(equalTo: endAnchor, constant: -endSpacing), type: .end))
+        case .fill:
+            constraints.append(make(view.topAnchor.constraint(equalTo: startAnchor, constant: startSpacing), type: .start))
+            constraints.append(make(view.bottomAnchor.constraint(equalTo: endAnchor, constant: -endSpacing), type: .end))
+        @unknown default:
+            break
+        }
+    }
+
+    /// 垂直方向交叉轴约束（vertical 主轴时，对水平方向处理）
+    private func addCrossAxisConstraints(
+        for view: UIView,
+        cfg: FlexItem,
+        startSpacing: CGFloat,
+        endSpacing: CGFloat,
+        startAnchor: NSLayoutXAxisAnchor,
+        endAnchor: NSLayoutXAxisAnchor,
+        centerAnchor: NSLayoutXAxisAnchor,
+        mainAxis: NSLayoutConstraint.Axis
+    ) {
+        func make(_ c: NSLayoutConstraint, type: LayoutConType) -> NSLayoutConstraint {
+            c.item.type = type; c.item.view = view; return c
+        }
+        switch cfg.alignSelf {
+        case .start:
+            constraints.append(make(view.leadingAnchor.constraint(equalTo: startAnchor, constant: startSpacing), type: .start))
+            constraints.append(make(view.trailingAnchor.constraint(lessThanOrEqualTo: endAnchor, constant: -endSpacing), type: .end))
+        case .center:
+            let offsetX = (startSpacing - endSpacing) * 0.5
+            constraints.append(make(view.leadingAnchor.constraint(greaterThanOrEqualTo: startAnchor, constant: startSpacing), type: .start))
+            constraints.append(make(view.trailingAnchor.constraint(lessThanOrEqualTo: endAnchor, constant: -endSpacing), type: .end))
+            constraints.append(make(view.centerXAnchor.constraint(equalTo: centerAnchor, constant: offsetX), type: .center))
+        case .end:
+            constraints.append(make(view.leadingAnchor.constraint(greaterThanOrEqualTo: startAnchor, constant: startSpacing), type: .start))
+            constraints.append(make(view.trailingAnchor.constraint(equalTo: endAnchor, constant: -endSpacing), type: .end))
+        case .fill:
+            constraints.append(make(view.leadingAnchor.constraint(equalTo: startAnchor, constant: startSpacing), type: .start))
+            constraints.append(make(view.trailingAnchor.constraint(equalTo: endAnchor, constant: -endSpacing), type: .end))
+        @unknown default:
+            break
+        }
+    }
+
+    /// 应用 flex 相对权重约束
+    private func applyFlexWeights(_ flexViews: [UIView], axis: NSLayoutConstraint.Axis) {
+        guard let firstView = flexViews.first else { return }
+        let firstDim: NSLayoutDimension = axis == .horizontal
+            ? firstView.widthAnchor : firstView.heightAnchor
+        let firstFlex = CGFloat(firstView.flex.flex)
+        guard firstFlex > 0 else { return }
+        let hugging     = UILayoutPriority(rawValue: UILayoutPriority.defaultLow.rawValue - 1)
+        let compression = UILayoutPriority(rawValue: UILayoutPriority.defaultHigh.rawValue - 1)
+        for (i, view) in flexViews.enumerated() {
+            view.setContentHuggingPriority(hugging, for: axis)
+            view.setContentCompressionResistancePriority(compression, for: axis)
+            guard i > 0 else { continue }
+            let dim: NSLayoutDimension = axis == .horizontal
+                ? view.widthAnchor : view.heightAnchor
+            let multiplier = CGFloat(view.flex.flex) / firstFlex
+            constraints.append(dim.constraint(equalTo: firstDim, multiplier: multiplier))
+        }
+    }
+}
