@@ -260,3 +260,10 @@
 }
 
 @end
+
+// ⚠️ 不能在 ObjC 里继承 Swift 类（ZLStackView），
+// 因为 Swift 导出到 ObjC 头文件时统一带有 objc_subclassing_restricted。
+// 需要继承请在 Swift 文件中定义，然后在 ObjC 中使用：
+//
+//   open class STackView: StackView { ... }   ← Swift
+//   STackView *sv = [[STackView alloc] init]; ← ObjC 使用

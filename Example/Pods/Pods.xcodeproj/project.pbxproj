@@ -33,6 +33,8 @@
 		760DFBAC0CB5C22ABDC8C70C53C5081B /* ConstraintMakerFinalizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 412D51A2BEEF78C262C4B3F3798D1702 /* ConstraintMakerFinalizable.swift */; };
 		764EC73A8367B30EDC9C9CA0C9FC9F7E /* ConstraintLayoutGuide+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E04B678C00268C9CF7E410145D6F78AA /* ConstraintLayoutGuide+Extensions.swift */; };
 		7D9D7292BDD4DE452AA91BA5BADC351B /* ConstraintRelatableTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF34962F54DAA8DEB0A1D7D4F3FC09A /* ConstraintRelatableTarget.swift */; };
+		8482AF0F2FD6C246003F549B /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8482AF0E2FD6C246003F549B /* Label.swift */; };
+		8482AF112FD6C7E5003F549B /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8482AF102FD6C7E5003F549B /* View.swift */; };
 		865C28AE09B6BA459C1202E2577762AE /* ConstraintInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D52A60BF41010F680313572B051598 /* ConstraintInsets.swift */; };
 		889EC03F61DB019F3A560DC3E9B507B9 /* ConstraintOffsetTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751D5202E1F291CC13F7AE0CD669B831 /* ConstraintOffsetTarget.swift */; };
 		8915C10368B7024103B75A5220ADBD6C /* ConstraintLayoutGuideDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91F91B010D4991E838DAC578595BA7A /* ConstraintLayoutGuideDSL.swift */; };
@@ -101,7 +103,7 @@
 		384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		38A6A462E0F0B040B83C8763773533FE /* LayoutConstraint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LayoutConstraint.swift; path = Sources/LayoutConstraint.swift; sourceTree = "<group>"; };
 		3AF34962F54DAA8DEB0A1D7D4F3FC09A /* ConstraintRelatableTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintRelatableTarget.swift; path = Sources/ConstraintRelatableTarget.swift; sourceTree = "<group>"; };
-		3ED48047201B40ECEF488478CE8C9FEF /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		3ED48047201B40ECEF488478CE8C9FEF /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		412D51A2BEEF78C262C4B3F3798D1702 /* ConstraintMakerFinalizable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerFinalizable.swift; path = Sources/ConstraintMakerFinalizable.swift; sourceTree = "<group>"; };
 		458867733779570F7398C76B46AEAF5E /* ConstraintView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintView.swift; path = Sources/ConstraintView.swift; sourceTree = "<group>"; };
 		465A79483C199375F55DAEADB5D76E27 /* LayoutGuide.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LayoutGuide.swift; path = ZLFlexKit/Classes/LayoutGuide.swift; sourceTree = "<group>"; };
@@ -113,25 +115,27 @@
 		5F2DCDFF2011C08759407B4E2038CA11 /* ConstraintAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintAttributes.swift; path = Sources/ConstraintAttributes.swift; sourceTree = "<group>"; };
 		7096225ED146E16EC168C99FEDD215B5 /* ConstraintPriorityTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintPriorityTarget.swift; path = Sources/ConstraintPriorityTarget.swift; sourceTree = "<group>"; };
 		751D5202E1F291CC13F7AE0CD669B831 /* ConstraintOffsetTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintOffsetTarget.swift; path = Sources/ConstraintOffsetTarget.swift; sourceTree = "<group>"; };
-		751D71E9C3F7CF7E5AAC68E6B4E0823E /* Pods-ZLFlexKit_Example */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-ZLFlexKit_Example"; path = Pods_ZLFlexKit_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		751D71E9C3F7CF7E5AAC68E6B4E0823E /* Pods_ZLFlexKit_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZLFlexKit_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		782C19B041349DED0C47AC71C798375C /* SnapKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SnapKit.release.xcconfig; sourceTree = "<group>"; };
 		7BC84DB0CD86A51B4B66E0450CBF40DE /* ConstraintDirectionalInsetTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintDirectionalInsetTarget.swift; path = Sources/ConstraintDirectionalInsetTarget.swift; sourceTree = "<group>"; };
 		7F9A10D60CA5C5DD63DAA3BCE691E330 /* StackEdgeInsets.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StackEdgeInsets.swift; path = ZLFlexKit/Classes/StackEdgeInsets.swift; sourceTree = "<group>"; };
+		8482AF0E2FD6C246003F549B /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Label.swift; path = ZLFlexKit/Classes/Label.swift; sourceTree = "<group>"; };
+		8482AF102FD6C7E5003F549B /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = View.swift; path = ZLFlexKit/Classes/View.swift; sourceTree = "<group>"; };
 		8A5D96C26908E58664541816D78C5794 /* Pods-ZLFlexKit_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-ZLFlexKit_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 		9226F0367905C7E71921481AD9E0FBF3 /* Pods-ZLFlexKit_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ZLFlexKit_Example-frameworks.sh"; sourceTree = "<group>"; };
 		932076048BB79360F50A76C2C738DFC8 /* SnapKit-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SnapKit-umbrella.h"; sourceTree = "<group>"; };
 		94E42FA589867A878EC039323DA40B7F /* SnapKit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = SnapKit.modulemap; sourceTree = "<group>"; };
 		94EE1507B34FD0571122EDE0923F0623 /* ConstraintItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintItem.swift; path = ZLFlexKit/Classes/ConstraintItem.swift; sourceTree = "<group>"; };
 		960E2E91424D9428F311B73888D8E927 /* Typealiases.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Typealiases.swift; path = Sources/Typealiases.swift; sourceTree = "<group>"; };
-		979486118B3E90C08386079D57962701 /* SnapKit */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SnapKit; path = SnapKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		979486118B3E90C08386079D57962701 /* SnapKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SnapKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		98EF0DFC6CDF69FCB06437EA9B5B4EA2 /* DSL.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DSL.swift; path = ZLFlexKit/Classes/DSL.swift; sourceTree = "<group>"; };
 		9B26EB663BD8325D183651ACCB7B10A9 /* Pods-ZLFlexKit_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-ZLFlexKit_Example-Info.plist"; sourceTree = "<group>"; };
 		9C1E4C73B51906B136C6342632344FFA /* FlexManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FlexManager.swift; path = ZLFlexKit/Classes/FlexManager.swift; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9F0A527ED8F0A719FF610D743A87DAD3 /* ConstraintMakerPrioritizable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerPrioritizable.swift; path = Sources/ConstraintMakerPrioritizable.swift; sourceTree = "<group>"; };
 		A2BF2957DB0498186BA51C0390E3F9D3 /* Layout.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Layout.swift; path = ZLFlexKit/Classes/Layout.swift; sourceTree = "<group>"; };
 		B1D1E27850F50CAB05F5435EC398D11E /* Pods-ZLFlexKit_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ZLFlexKit_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		B4E1B92E93577F1739B2EA565F74D80E /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		B4E1B92E93577F1739B2EA565F74D80E /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		B57B4B15AAC3AB24B43306829FAA77A0 /* ConstraintPriority.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintPriority.swift; path = Sources/ConstraintPriority.swift; sourceTree = "<group>"; };
 		B7C5455A7DF10F42C9AE101032DA5C6E /* ZLFlexKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ZLFlexKit.release.xcconfig; sourceTree = "<group>"; };
 		BA50A49AB14A27B030EF455D9943EB8B /* ConstraintLayoutSupport.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintLayoutSupport.swift; path = Sources/ConstraintLayoutSupport.swift; sourceTree = "<group>"; };
@@ -146,7 +150,7 @@
 		D2FD9EFCFC3AA452137876B761FFB621 /* SnapKit-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "SnapKit-Info.plist"; sourceTree = "<group>"; };
 		D3E7DA1D5B66892233B416FB2F5AEC0E /* ZLFlexKit-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ZLFlexKit-umbrella.h"; sourceTree = "<group>"; };
 		DD101E65ADCCC341BCD3BFF777CA947C /* ConstraintConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintConfig.swift; path = Sources/ConstraintConfig.swift; sourceTree = "<group>"; };
-		DDC09CBE0B587BC04CDDF3826869344C /* ZLFlexKit */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = ZLFlexKit; path = ZLFlexKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DDC09CBE0B587BC04CDDF3826869344C /* ZLFlexKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZLFlexKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDFBBDB0D11D15EA3C0D640EF407F700 /* ConstraintMakerExtendable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerExtendable.swift; path = Sources/ConstraintMakerExtendable.swift; sourceTree = "<group>"; };
 		E04B678C00268C9CF7E410145D6F78AA /* ConstraintLayoutGuide+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ConstraintLayoutGuide+Extensions.swift"; path = "Sources/ConstraintLayoutGuide+Extensions.swift"; sourceTree = "<group>"; };
 		E17671211290F2C8A44B66902B11152A /* Pods-ZLFlexKit_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-ZLFlexKit_Example-dummy.m"; sourceTree = "<group>"; };
@@ -158,7 +162,7 @@
 		F55D2A11C17BBCE3C9F7F0BA9555B5AE /* ConstraintLayoutGuide.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintLayoutGuide.swift; path = Sources/ConstraintLayoutGuide.swift; sourceTree = "<group>"; };
 		F57C38722D9F65992CF2200038C8651E /* ConstraintMakerEditable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerEditable.swift; path = Sources/ConstraintMakerEditable.swift; sourceTree = "<group>"; };
 		FE5693124BFA9269D2085EC1ADFAAD76 /* ConstraintInsetTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintInsetTarget.swift; path = Sources/ConstraintInsetTarget.swift; sourceTree = "<group>"; };
-		FEBD51CDE7E4C41AA06ECEF9AAC886EB /* ZLFlexKit.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = ZLFlexKit.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		FEBD51CDE7E4C41AA06ECEF9AAC886EB /* ZLFlexKit.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = ZLFlexKit.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -306,16 +310,15 @@
 				152EE8343B4F64CFDE73F65CEF14A13F /* UILayoutSupport+Extensions.swift */,
 				403EB05A3920652EED411213C52E3AC2 /* Support Files */,
 			);
-			name = SnapKit;
 			path = SnapKit;
 			sourceTree = "<group>";
 		};
 		D3ADB90C9FA14444B0B833A55E52F7D1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				751D71E9C3F7CF7E5AAC68E6B4E0823E /* Pods-ZLFlexKit_Example */,
-				979486118B3E90C08386079D57962701 /* SnapKit */,
-				DDC09CBE0B587BC04CDDF3826869344C /* ZLFlexKit */,
+				751D71E9C3F7CF7E5AAC68E6B4E0823E /* Pods_ZLFlexKit_Example.framework */,
+				979486118B3E90C08386079D57962701 /* SnapKit.framework */,
+				DDC09CBE0B587BC04CDDF3826869344C /* ZLFlexKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -358,6 +361,8 @@
 				C74238C26E31EC9AD6FB3471601AC0EE /* ScrollView.swift */,
 				7F9A10D60CA5C5DD63DAA3BCE691E330 /* StackEdgeInsets.swift */,
 				E1B841C1294850706CCDC31570B872FD /* StackView.swift */,
+				8482AF0E2FD6C246003F549B /* Label.swift */,
+				8482AF102FD6C7E5003F549B /* View.swift */,
 				DADB9777D57999F9E0B5A5F5902B4EF4 /* Pod */,
 				C56C07214B2847A7C1D004399C2BCE45 /* Support Files */,
 			);
@@ -418,7 +423,7 @@
 			);
 			name = SnapKit;
 			productName = SnapKit;
-			productReference = 979486118B3E90C08386079D57962701 /* SnapKit */;
+			productReference = 979486118B3E90C08386079D57962701 /* SnapKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		C017D15668F31CFD49FAED345D8EE506 /* ZLFlexKit */ = {
@@ -436,7 +441,7 @@
 			);
 			name = ZLFlexKit;
 			productName = ZLFlexKit;
-			productReference = DDC09CBE0B587BC04CDDF3826869344C /* ZLFlexKit */;
+			productReference = DDC09CBE0B587BC04CDDF3826869344C /* ZLFlexKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		DC32376A2ECA029A597C94562B0B2AB5 /* Pods-ZLFlexKit_Example */ = {
@@ -456,7 +461,7 @@
 			);
 			name = "Pods-ZLFlexKit_Example";
 			productName = Pods_ZLFlexKit_Example;
-			productReference = 751D71E9C3F7CF7E5AAC68E6B4E0823E /* Pods-ZLFlexKit_Example */;
+			productReference = 751D71E9C3F7CF7E5AAC68E6B4E0823E /* Pods_ZLFlexKit_Example.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -477,8 +482,6 @@
 				en,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
-			minimizedProjectReferenceProxies = 0;
-			preferredProjectObjectVersion = 77;
 			productRefGroup = D3ADB90C9FA14444B0B833A55E52F7D1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -523,9 +526,11 @@
 				1DB110961CF47C5A6C37B89C988128F1 /* DSL.swift in Sources */,
 				059E380ADB11B2C53CA4FAAB6D060280 /* FlexItem.swift in Sources */,
 				A4E1310C6951391F13D49234EDCE5033 /* FlexManager.swift in Sources */,
+				8482AF0F2FD6C246003F549B /* Label.swift in Sources */,
 				E22621BE7BC5819DCFA15F41CB139910 /* Layout.swift in Sources */,
 				544A62E2E22A81730E0B45811415AD6E /* LayoutGuide.swift in Sources */,
 				3747E1E28718FD9D1217D23B6BEA553E /* ScrollView.swift in Sources */,
+				8482AF112FD6C7E5003F549B /* View.swift in Sources */,
 				65FA48E58C811434D8745A09716B9A57 /* StackEdgeInsets.swift in Sources */,
 				691F090FF8482C72705C7D7635512A57 /* StackView.swift in Sources */,
 				60B0D2826378F39743E2E2CBCF213431 /* ZLFlexKit-dummy.m in Sources */,
@@ -729,8 +734,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
 			};
