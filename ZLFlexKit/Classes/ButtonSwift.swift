@@ -736,9 +736,73 @@ private extension ButtonSwift {
     }
 
 }
+// MARK: - Swift 链式API
+public extension ButtonSwift {
+    @discardableResult
+    func axis(_ v: ButtonAxis) -> Self {
+        self.axis = v
+        return self
+    }
+    @discardableResult
+    func contentOrder(_ v: ButtonOrder) -> Self {
+        self.contentOrder = v
+        return self
+    }
+    @discardableResult
+    func verticalAlign(_ v: ButtonAlign) -> Self {
+        self.verticalAlign = v
+        return self
+    }
+    @discardableResult
+    func horizontalAlign(_ v: ButtonAlign) -> Self {
+        self.horizontalAlign = v
+        return self
+    }
+    @discardableResult
+    func spacing(_ v: CGFloat) -> Self {
+        self.spacing = v
+        return self
+    }
+    @discardableResult
+    func flexibleSpacing(_ v: Bool) -> Self {
+        self.flexibleSpacing = v
+        return self
+    }
+    @discardableResult
+    func insets(_ v: UIEdgeInsets) -> Self {
+        self.insets = v
+        return self
+    }
+    @discardableResult
+    func imageSize(_ v: CGSize) -> Self {
+        self.imageSize = v
+        return self
+    }
+    @discardableResult
+    func titleSize(_ v: CGSize) -> Self {
+        self.titleSize = v
+        return self
+    }
+    @discardableResult
+    func tapInterval(_ v: CGFloat) -> Self {
+        self.tapInterval = v
+        return self
+    }
+    @discardableResult
+    func imgTouchOnly(_ v: Bool) -> Self {
+        self.imgTouchOnly = v
+        return self
+    }
+    @discardableResult
+    func touchAreaEdgeInsets(_ v: UIEdgeInsets) -> Self {
+        self.touchAreaEdgeInsets = v
+        return self
+    }
+    
+}
 
-// MARK: - ObjC Chainable Extension
 
+// MARK: - ObjC 链式API
 public extension ButtonSwift {
 
     @objc(setAxis)
@@ -746,6 +810,19 @@ public extension ButtonSwift {
     var axisObjc: (ButtonAxis) -> ButtonSwift {
         { [weak self] v in self?.axis = v; return self! }
     }
+    
+    @objc
+    var vertical: ButtonSwift {
+        axis = .vertical
+        return self
+    }
+    
+    @objc
+    var horizontal: ButtonSwift {
+        axis = .horizontal
+        return self
+    }
+   
 
     @objc(setContentOrder)
     @available(swift, obsoleted: 1, renamed: "contentOrder")
@@ -815,7 +892,7 @@ public extension ButtonSwift {
 }
 
 
-
+// MARK: - ObjC 样式链式API
 public extension ButtonSwift {
     @objc(gradColors)
     @available(swift, obsoleted: 1, renamed: "gradColors(_:)")
