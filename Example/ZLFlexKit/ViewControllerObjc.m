@@ -28,18 +28,21 @@
     button.backgroundColor = UIColor.redColor;
     button.insets = UIEdgeInsetsMake(8, 12, 8, 12);
    // button.contentOrder = ButtonOrderTitleFirst;
-    button.axis = ButtonAxisHorizontal;
+//    button.axis = ButtonAxisHorizontal;
     button.spacing = 20;
 //    button.flexibleSpacing = YES;
 //    button.horizontalAlign = ZLButtonAlignFill;
     [button setTitle:@"Button" forState:UIControlStateNormal];
     [button setImage:[UIImage systemImageNamed:@"star.fill"] forState:UIControlStateNormal];
-    button.axis = ButtonAxisVertical;
+//    button.axis = ButtonAxisVertical;
 
     button.layout.centerOffset(0, 0);
 //    button.layout.width(50);
 //    return;
-//    [button titleMargeWithStart:100 end:20];
+    [button titleMargeWithStart:20 end:20];
+    [button imageMargeWithStart:30 end:20];
+    
+    button.radius(10).shadowColor(UIColor.blackColor).shadowOpacity(0.5);
 //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //        button.axis = ButtonAxisVertical;
 //        [button setImage:[UIImage systemImageNamed:@"star.fill"] forState:UIControlStateNormal];

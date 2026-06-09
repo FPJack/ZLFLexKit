@@ -48,7 +48,7 @@ private let kSpacingId       = "kSpacingId"
 private let kCustomPriority  = UILayoutPriority(UILayoutPriority.required.rawValue - 1)
 
 @objc(ZLButtonSwift)
-open class ButtonSwift: UIButton {
+open class ButtonSwift: UIButton,ViewStyleable {
 
     /// 内容布局轴向，默认为水平
     @objc
@@ -178,7 +178,6 @@ open class ButtonSwift: UIButton {
     open override var titleLabel: UILabel? {
         let label = super.titleLabel
         if labelObservation == nil {
-            print("observe titleLabel: \(String(describing: labelObservation))")
             labelObservation = label?.observe(\.isHidden, options: [.new,.old]) { [weak self] _, change in
                 guard let self = self else { return }
                 if change.newValue != change.oldValue {
@@ -234,6 +233,7 @@ open class ButtonSwift: UIButton {
     open override func layoutSubviews() {
         super.layoutSubviews()
         adjustImageViewCompressionAndHugging()
+        viewStyle.layoutSubviews()
     }
     
     
@@ -285,6 +285,27 @@ open class ButtonSwift: UIButton {
             bottom: -edgeInsets.bottom, right: -edgeInsets.right))
         return expanded.contains(point)
     }
+    
+    
+    
+    lazy  public var viewStyle: ViewStyle = {
+       ViewStyle(view: self)
+    }()
+    override public var backgroundColor: UIColor? {
+        get {
+            return viewStyle.backgroundColor
+        }
+        set {
+            viewStyle.backgroundColor = newValue
+        }
+    }
+    public func superBackgroundColor() -> UIColor? {
+         super.backgroundColor
+    }
+    public func superSetBackgroundColor(_ color: UIColor?) {
+        super.backgroundColor = color
+    }
+   
 }
 
 // MARK: - Private Helpers
@@ -412,14 +433,14 @@ private extension ButtonSwift {
             let endSp   = isTitle ? titleMarge.end   : imageMarge.end
 
             if axis == .horizontal {
-                applyVerticalMainAxis(
-                    view: view, index: i, count: count,
-                    nextY: &nextY, insets: ei, space: sp,
-                    startSp: startSp, endSp: endSp)
-            } else {
                 applyHorizontalMainAxis(
                     view: view, index: i, count: count,
                     nextX: &nextX, insets: ei, space: sp,
+                    startSp: startSp, endSp: endSp)
+            } else {
+                applyVerticalMainAxis(
+                    view: view, index: i, count: count,
+                    nextY: &nextY, insets: ei, space: sp,
                     startSp: startSp, endSp: endSp)
             }
         }
@@ -792,3 +813,95 @@ public extension ButtonSwift {
         { [weak self] v in self?.touchAreaEdgeInsets = v; return self! }
     }
 }
+
+
+
+public extension ButtonSwift {
+    @objc(gradColors)
+    @available(swift, obsoleted: 1, renamed: "gradColors(_:)")
+    var gradColorsObjc: (_ colors: [UIColor]?) -> ButtonSwift {
+        { colors in
+            self.gradColors(colors)
+        }
+    }
+    
+    @objc(gradDirection)
+    @available(swift, obsoleted: 1, renamed: "gradDirection(start:end:)")
+    var gradDirectionObjc: (_ start: CGPoint, _ end: CGPoint) -> ButtonSwift {
+        { start, end in
+            self.gradDirection(start: start, end: end)
+        }
+    }
+    
+    @objc(borderColor)
+    @available(swift, obsoleted: 1, renamed: "borderColor(_:)")
+    var borderColorObjc: (_ color: UIColor?) -> ButtonSwift {
+        { color in
+            self.borderColor(color: color)
+        }
+    }
+    
+    @objc(borderWidth)
+    @available(swift, obsoleted: 1, renamed: "borderWidth(_:)")
+    var borderWidthObjc: (_ width: CGFloat) -> ButtonSwift {
+        { width in
+            self.borderWidth(w: width)
+        }
+    }
+    
+    @objc(border)
+    @available(swift, obsoleted: 1, renamed: "border(color:width:)")
+    var borderObjc: (_ color: UIColor?, _ width: CGFloat) -> ButtonSwift {
+        { color, width in
+            self.border(color: color, w: width)
+        }
+    }
+    @objc(shadowColor)
+    @available(swift, obsoleted: 1, renamed: "shadowColor(_:)")
+    var shadowColorObjc: (_ color: UIColor?) -> ButtonSwift {
+        { color in
+            self.shadowColor(color: color)
+        }
+    }
+    
+    @objc(shadowOffset)
+    @available(swift, obsoleted: 1, renamed: "shadowOffset(_:_:)")
+    var shadowOffsetObjc: (_ width: CGFloat, _ height: CGFloat) -> ButtonSwift {
+        { w, h in
+            self.shadowOffset(w: w, h: h)
+        }
+    }
+    
+    @objc(shadowRadius)
+    @available(swift, obsoleted: 1, renamed: "shadowRadius(_:)")
+    var shadowRadiusObjc: (_ radius: CGFloat) -> ButtonSwift {
+        { radius in
+            self.shadowRadius(radius: radius)
+        }
+    }
+    
+    @objc(shadowOpacity)
+    @available(swift, obsoleted: 1, renamed: "shadowOpacity(_:)")
+    var shadowOpacityObjc: (_ opacity: Float) -> ButtonSwift {
+        { opacity in
+            self.shadowOpacity(opacity: opacity)
+        }
+    }
+    @objc(cornerRadii)
+    @available(swift, obsoleted: 1, renamed: "cornerRadii(_:_:_:_:)")
+    var cornerRadiiObjc: (_ tl: CGFloat, _ tr: CGFloat, _ bl: CGFloat, _ br: CGFloat) -> ButtonSwift {
+        { tl, tr, bl, br in
+            self.cornerRadii(tl, tr, bl, br)
+        }
+    }
+    
+    @objc(radius)
+    @available(swift, obsoleted: 1, renamed: "radius(_:)")
+    var radiusObjc: (_ radius: CGFloat) -> ButtonSwift {
+        { r in
+            self.radius(r)
+        }
+    }
+}
+
+
