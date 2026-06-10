@@ -283,7 +283,8 @@ final class StackEdgeInsets {
     private var _bottomGuide:   LayoutGuide?
     private var _trailingGuide: LayoutGuide?
     private var _margeGuide:    MargeGuide?
-    
+    private var isRelativeLayout: Bool = false
+
 
     private var margeGuide: UILayoutGuide {
         if _margeGuide == nil, let sv = stackView {
@@ -296,30 +297,30 @@ final class StackEdgeInsets {
    private func innerLeadingAnchor() ->
     NSLayoutXAxisAnchor {
         guard let stackView = stackView else { return margeGuide.leadingAnchor }
-        return stackView.isRelativeLayout ?  margeGuide.leadingAnchor : stackView.leadingAnchor
+        return isRelativeLayout ?  margeGuide.leadingAnchor : stackView.leadingAnchor
     }
     private func innerTrailingAnchor() -> NSLayoutXAxisAnchor {
         guard let stackView = stackView else { return margeGuide.trailingAnchor }
-        return stackView.isRelativeLayout ? margeGuide.trailingAnchor : stackView.trailingAnchor
+        return isRelativeLayout ? margeGuide.trailingAnchor : stackView.trailingAnchor
     }
     private func innerTopAnchor() -> NSLayoutYAxisAnchor {
         guard let stackView = stackView else { return margeGuide.topAnchor }
-        return stackView.isRelativeLayout ? margeGuide.topAnchor : stackView.topAnchor
+        return isRelativeLayout ? margeGuide.topAnchor : stackView.topAnchor
 
     }
     private func innerBottomAnchor() -> NSLayoutYAxisAnchor {
         guard let stackView = stackView else { return margeGuide.bottomAnchor }
-        return stackView.isRelativeLayout ? margeGuide.bottomAnchor : stackView.bottomAnchor
+        return isRelativeLayout ? margeGuide.bottomAnchor : stackView.bottomAnchor
     }
     
     private func innerCenterXAnchor() -> NSLayoutXAxisAnchor {
         guard let stackView = stackView else { return margeGuide.centerXAnchor }
-        return stackView.isRelativeLayout ? margeGuide.centerXAnchor : stackView.centerXAnchor
+        return isRelativeLayout ? margeGuide.centerXAnchor : stackView.centerXAnchor
     }
     
     private func innerCenterYAnchor() -> NSLayoutYAxisAnchor {
         guard let stackView = stackView else { return margeGuide.centerYAnchor }
-        return stackView.isRelativeLayout ? margeGuide.centerYAnchor : stackView.centerYAnchor
+        return isRelativeLayout ? margeGuide.centerYAnchor : stackView.centerYAnchor
     }
         
 
