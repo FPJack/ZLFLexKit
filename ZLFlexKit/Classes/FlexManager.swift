@@ -10,6 +10,10 @@ import UIKit
 final class FlexManager {
 
     weak var stackView: StackView?
+    
+    private var justifyFirstConstraints: NSLayoutConstraint?
+    private var justifyLastConstraints: NSLayoutConstraint?
+    
 
     private(set) var constraints: [NSLayoutConstraint] = []
 
@@ -63,7 +67,7 @@ final class FlexManager {
         let fittingLow = UILayoutPriority(rawValue: UILayoutPriority.fittingSizeLevel.rawValue / 2.0)
         
         let noIntrinsic = CGSize(width: UIViewNoIntrinsicMetric, height: UIViewNoIntrinsicMetric)
-
+        let insets = stackView?.insets ?? .zero
         for i in 0 ..< count {
             let view = views[i]
             view.translatesAutoresizingMaskIntoConstraints = false
@@ -87,7 +91,7 @@ final class FlexManager {
             // 交叉轴约束
             addCrossAxisConstraints(
                 for: view, cfg: cfg,
-                startSpacing: startSpacing, endSpacing: endSpacing,
+                startSpacing: startSpacing + insets.top, endSpacing: endSpacing + insets.bottom,
                 startAnchor: stackEdgeInsets.topAnchor,
                 endAnchor:   stackEdgeInsets.bottomAnchor,
                 centerAnchor: stackEdgeInsets.centerYAnchor,
@@ -101,6 +105,12 @@ final class FlexManager {
             } else {
                 leadingCon = view.leadingAnchor.constraint(equalTo: nextXAnchor, constant: 0)
             }
+            
+            if i == 0 {
+                leadingCon.constant = insets.left;
+                justifyFirstConstraints = leadingCon
+            }
+            
             constraints.append(leadingCon)
             nextXAnchor = view.trailingAnchor
 
@@ -178,10 +188,14 @@ final class FlexManager {
 
         // 末尾约束
         if justify == .start {
-            constraints.append(nextXAnchor.constraint(lessThanOrEqualTo: stackEdgeInsets.jTrailingAnchor, constant: 0))
+            constraints.append(nextXAnchor.constraint(lessThanOrEqualTo: stackEdgeInsets.jTrailingAnchor, constant: -insets.right))
         } else {
-            constraints.append(nextXAnchor.constraint(equalTo: stackEdgeInsets.jTrailingAnchor, constant: 0))
+            constraints.append(nextXAnchor.constraint(equalTo: stackEdgeInsets.jTrailingAnchor, constant: -insets.right))
         }
+        
+        justifyLastConstraints = constraints.last
+
+       
 
         // spaceAround / spaceEvenly 边距关系
         if let dim = widthDim {
@@ -230,7 +244,7 @@ final class FlexManager {
 
         let fittingLow = UILayoutPriority(rawValue: UILayoutPriority.fittingSizeLevel.rawValue / 2.0)
         let noIntrinsic = CGSize(width: UIViewNoIntrinsicMetric, height: UIViewNoIntrinsicMetric)
-
+        let insets = stackView?.insets ?? .zero
         for i in 0 ..< count {
             let view = views[i]
             view.translatesAutoresizingMaskIntoConstraints = false
@@ -254,7 +268,7 @@ final class FlexManager {
             // 交叉轴约束
             addCrossAxisConstraints(
                 for: view, cfg: cfg,
-                startSpacing: startSpacing, endSpacing: endSpacing,
+                startSpacing: startSpacing + insets.left, endSpacing: endSpacing + insets.right,
                 startAnchor: stackEdgeInsets.leadingAnchor,
                 endAnchor:   stackEdgeInsets.trailingAnchor,
                 centerAnchor: stackEdgeInsets.centerXAnchor,
@@ -268,6 +282,12 @@ final class FlexManager {
             } else {
                 topCon = view.topAnchor.constraint(equalTo: nextYAnchor, constant: 0)
             }
+            
+            if i == 0 {
+                topCon.constant = insets.top;
+                justifyFirstConstraints = topCon
+            }
+            
             constraints.append(topCon)
             nextYAnchor = view.bottomAnchor
 
@@ -345,10 +365,11 @@ final class FlexManager {
 
         // 末尾约束
         if justify == .start {
-            constraints.append(nextYAnchor.constraint(lessThanOrEqualTo: stackEdgeInsets.jBottomAnchor, constant: 0))
+            constraints.append(nextYAnchor.constraint(lessThanOrEqualTo: stackEdgeInsets.jBottomAnchor, constant: -insets.bottom))
         } else {
-            constraints.append(nextYAnchor.constraint(equalTo: stackEdgeInsets.jBottomAnchor, constant: 0))
+            constraints.append(nextYAnchor.constraint(equalTo: stackEdgeInsets.jBottomAnchor, constant: -insets.bottom))
         }
+        justifyLastConstraints = constraints.last
 
         // spaceAround / spaceEvenly 边距关系
         if let dim = heightDim {
@@ -397,7 +418,39 @@ final class FlexManager {
     // MARK: - Insets
 
     func updateInsets(_ insets: UIEdgeInsets) {
-        stackEdgeInsets.insets = insets
+//        stackEdgeInsets.insets = insets
+        if let first = justifyFirstConstraints {
+            first.constant = horizontal ? insets.left : insets.top
+        }
+        if let last = justifyLastConstraints {
+            last.constant = horizontal ? -insets.right : -insets.bottom
+        }
+        
+        
+        constraints.forEach { cons in
+            guard let view = cons.item.view else { return }
+            let flexItem = view.flex
+            let startMarge = flexItem.startMarge
+            let endMarge = flexItem.endMarge
+            let type = cons.item.type
+            if type == .start {
+                if horizontal {
+                    cons.constant = startMarge + insets.top
+                } else {
+                    cons.constant = startMarge + insets.left
+                }
+            } else if type == .end {
+                if horizontal {
+                    cons.constant = -(endMarge + insets.bottom)
+                } else {
+                    cons.constant = -(endMarge + insets.right)
+                }
+            } else if type == .center {
+                let startSpacing = horizontal ? startMarge + insets.top : startMarge + insets.left
+                let endSpacing   = horizontal ? endMarge + insets.bottom : endMarge + insets.right
+                cons.constant = (startSpacing - endSpacing) * 0.5
+            }
+        }
     }
 
     // MARK: - Private helpers

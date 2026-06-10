@@ -38,6 +38,23 @@ public final class FlexItem: NSObject {
     
     public weak var stackView: StackView?
     
+    private var startInset: CGFloat {
+        guard let stackView = stackView else { return 0 }
+        if stackView.axis == .horizontal {
+            return stackView.insets.top
+        } else {
+            return stackView.insets.left
+        }
+    }
+    private var endInset: CGFloat {
+        guard let stackView = stackView else { return 0 }
+        if stackView.axis == .horizontal {
+            return stackView.insets.bottom
+        } else {
+            return stackView.insets.right
+        }
+    }
+    
     public var startMarge: CGFloat = 0 {
         didSet {
             guard startMarge != oldValue else { return }
@@ -50,7 +67,7 @@ public final class FlexItem: NSObject {
                 return
             }
             
-            cons.constant = startMarge
+            cons.constant = startMarge + startInset
             
             if alignSelf == .center {
                 
@@ -62,7 +79,7 @@ public final class FlexItem: NSObject {
                     
                 }?.first
                 
-                centerCons?.constant = (startMarge - endMarge) * 0.5
+                centerCons?.constant = (startMarge + startInset - endMarge - endInset) * 0.5
                 
             }
         }
@@ -79,9 +96,7 @@ public final class FlexItem: NSObject {
                 return
             }
             
-    
-            
-            cons.constant = -endMarge
+            cons.constant = -endMarge - endInset
             
             if alignSelf == .center {
                 
@@ -93,7 +108,7 @@ public final class FlexItem: NSObject {
                     
                 }?.first
                 
-                centerCons?.constant = (startMarge - endMarge) * 0.5
+                centerCons?.constant = (startMarge + startInset - endMarge - endInset) * 0.5
                 
             }
 

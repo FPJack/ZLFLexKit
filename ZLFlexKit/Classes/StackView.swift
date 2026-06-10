@@ -59,7 +59,7 @@ open class StackView: UIView {
     public var insets: UIEdgeInsets = .zero {
         didSet {
             if oldValue != insets {
-                isRelativeLayout = true
+//                isRelativeLayout = true
                 layoutManager.updateInsets(insets)
             }
         }

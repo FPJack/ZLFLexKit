@@ -536,7 +536,9 @@ class InsetsDemoVC: UIViewController {
         sv.spacing = 50
         sv.alignment = .fill
         sv.insets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
-        for i in 0..<3 { sv.addArrangedSubview(UIView.colored(colors[i], text: "\(i+1)", size: .zero)) }
+        for i in 0..<3 { sv.addArrangedSubview(UIView.colored(colors[i], text: "\(i+1)", size: .zero))
+            
+        }
         container.addArrangedSubview(sv)
 
         insetsLabel = UILabel()
