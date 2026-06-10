@@ -275,83 +275,83 @@ open class StackView: UIView {
     // MARK: - OC链式API
     @objc
     @available(swift, obsoleted: 1, renamed: "axis(_:)")
-    var justifyFillEqually: StackView {
+    public var justifyFillEqually: StackView {
         self.justifyContent = .fillEqually
         return self
     }
     
     @objc
     @available(swift, obsoleted: 1, renamed: "axis(_:)")
-    var justifyFill: StackView {
+    public var justifyFill: StackView {
         self.justifyContent = .fill
         return self
     }
     @objc
     @available(swift, obsoleted: 1, renamed: "axis(_:)")
-    var justifyStart: StackView {
+    public var justifyStart: StackView {
         self.justifyContent = .start
         return self
     }
     @objc
     @available(swift, obsoleted: 1, renamed: "axis(_:)")
-    var justifyCenter: StackView {
+    public var justifyCenter: StackView {
         self.justifyContent = .center
         return self
     }
     @objc
     @available(swift, obsoleted: 1, renamed: "axis(_:)")
-    var justifyEnd: StackView {
+    public var justifyEnd: StackView {
         self.justifyContent = .end
         return self
     }
     @objc
     @available(swift, obsoleted: 1, renamed: "axis(_:)")
-    var justifySpaceBetween: StackView {
+    public var justifySpaceBetween: StackView {
         self.justifyContent = .spaceBetween
         return self
     }
     @objc
     @available(swift, obsoleted: 1, renamed: "axis(_:)")
-    var justifySpaceAround: StackView {
+    public var justifySpaceAround: StackView {
         self.justifyContent = .spaceAround
         return self
     }
     @objc
     @available(swift, obsoleted: 1, renamed: "axis(_:)")
-    var justifySpaceEvenly: StackView {
+    public var justifySpaceEvenly: StackView {
         self.justifyContent = .spaceEvenly
         return self
     }
     
     @objc
     @available(swift, obsoleted: 1, renamed: "axis(_:)")
-    var alignFill: StackView {
+    public var alignFill: StackView {
         self.alignment = .fill
         return self
     }
     
     @objc
     @available(swift, obsoleted: 1, renamed: "axis(_:)")
-    var alignStart: StackView {
+    public var alignStart: StackView {
         self.alignment = .start
         return self
     }
     @objc
     @available(swift, obsoleted: 1, renamed: "axis(_:)")
-    var alignCenter: StackView {
+    public var alignCenter: StackView {
         self.alignment = .center
         return self
     }
     @objc
     @available(swift, obsoleted: 1, renamed: "axis(_:)")
-    var alignEnd: StackView {
+    public var alignEnd: StackView {
         self.alignment = .end
         return self
     }
     
     @objc(setAxis)
     @available(swift, obsoleted: 1, renamed: "axis(_:)")
-    var axisObjc: (_ axis: StackViewAxis) -> StackView {
+    public var axisObjc: (_ axis: StackViewAxis) -> StackView {
         {
             axis in self.axis = axis;
             return self
@@ -360,7 +360,7 @@ open class StackView: UIView {
     
     @objc(setAlign)
     @available(swift, obsoleted: 1, renamed: "align(_:)")
-    var alignObjc: (_ alignment: FlexItemCrossAlign) -> StackView {
+    public var alignObjc: (_ alignment: FlexItemCrossAlign) -> StackView {
         {
             alignment in self.alignment = alignment;
             return self
@@ -369,7 +369,7 @@ open class StackView: UIView {
     
     @objc(setJustify)
     @available(swift, obsoleted: 1, renamed: "justify(_:)")
-    var justifyObjc: (_ justifyContent: Justify) -> StackView{
+    public var justifyObjc: (_ justifyContent: Justify) -> StackView{
         {
             justifyContent in self.justifyContent = justifyContent;
             return self
@@ -378,7 +378,7 @@ open class StackView: UIView {
     
     @objc(setInsets)
     @available(swift, obsoleted: 1, renamed: "insets(_:)")
-    var insetsObjc: (_ top: CGFloat,_ leading: CGFloat,_ bottom: CGFloat, _ trailing: CGFloat) -> StackView {
+    public var insetsObjc: (_ top: CGFloat,_ leading: CGFloat,_ bottom: CGFloat, _ trailing: CGFloat) -> StackView {
         {
             top,leading,bottom,trailing in self.insets = .init(top: top, left: leading, bottom: bottom, right: trailing);
             return self
@@ -387,7 +387,7 @@ open class StackView: UIView {
     
     @objc(setSpacing)
     @available(swift, obsoleted: 1, renamed: "spacing(_:)")
-    var spacingObjc: (_ spacing: CGFloat) -> StackView {
+    public var spacingObjc: (_ spacing: CGFloat) -> StackView {
         {
             spacing in self.spacing = spacing;
             return self
