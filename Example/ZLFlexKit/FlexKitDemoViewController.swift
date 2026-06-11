@@ -49,7 +49,8 @@ class FlexKitDemoViewController: UITableViewController {
         super.viewDidLoad()
         title = "ZLFlexKit Demo"
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        tableView.backgroundColor = .compatBackground
+        tableView.backgroundColor = .white
+        view.backgroundColor = .white
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -63,6 +64,7 @@ class FlexKitDemoViewController: UITableViewController {
         cell.textLabel?.font = .systemFont(ofSize: 14, weight: .medium)
         cell.detailTextLabel?.text = demo.subtitle
         cell.accessoryType = .disclosureIndicator
+        cell.backgroundColor = .orange
         return cell
     }
 

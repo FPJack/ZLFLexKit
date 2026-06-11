@@ -66,7 +66,7 @@ final class FlexManager {
 
         let fittingLow = UILayoutPriority(rawValue: UILayoutPriority.fittingSizeLevel.rawValue / 2.0)
         
-        let noIntrinsic = CGSize(width: UIViewNoIntrinsicMetric, height: UIViewNoIntrinsicMetric)
+        let noIntrinsic = CGSize(width: UIView.noIntrinsicMetric, height: UIView.noIntrinsicMetric)
         let insets = stackView?.insets ?? .zero
         for i in 0 ..< count {
             let view = views[i]
@@ -243,7 +243,7 @@ final class FlexManager {
         var flexViews:     [UIView] = []
 
         let fittingLow = UILayoutPriority(rawValue: UILayoutPriority.fittingSizeLevel.rawValue / 2.0)
-        let noIntrinsic = CGSize(width: UIViewNoIntrinsicMetric, height: UIViewNoIntrinsicMetric)
+        let noIntrinsic = CGSize(width: UIView.noIntrinsicMetric, height: UIView.noIntrinsicMetric)
         let insets = stackView?.insets ?? .zero
         for i in 0 ..< count {
             let view = views[i]
