@@ -32,7 +32,7 @@ extension CGFloat: NumberConvertible { public var doubleValue: Double { Double(s
 
 
 @objc(ZLLayout)
-public class Layout: NSObject {
+public class LayoutBox: NSObject {
 
     public weak var view: UIView?
 
@@ -402,7 +402,7 @@ public class Layout: NSObject {
     }
 
     @discardableResult
-    public func addSubviewLayout(_ subview: UIView, layout: (Layout) -> Void) -> Self {
+    public func addSubviewLayout(_ subview: UIView, layout: (LayoutBox) -> Void) -> Self {
         view?.addSubview(subview)
         layout(subview.box)
         return self
@@ -419,11 +419,11 @@ public extension UIView {
 
     /// 关联的 Layout 对象
     /// box or geo
-   @objc var box: Layout {
-        if let obj = objc_getAssociatedObject(self, &zlLayoutKey) as? Layout {
+   @objc var box: LayoutBox {
+        if let obj = objc_getAssociatedObject(self, &zlLayoutKey) as? LayoutBox {
             return obj
         }
-        let layoutObj = Layout()
+        let layoutObj = LayoutBox()
         layoutObj.view = self
        _ = Unmanaged.passRetained(self).autorelease()
         objc_setAssociatedObject(self, &zlLayoutKey, layoutObj, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
@@ -471,226 +471,226 @@ public extension UIView {
 
 
 
-public extension Layout {
+public extension LayoutBox {
 
     // MARK: - CenterX
     @objc(centerX)
     @available(swift, obsoleted: 1, renamed: "centerX(_:)")
-    var centerXObjc: (_ x: CGFloat) -> Layout {
+    var centerXObjc: (_ x: CGFloat) -> LayoutBox {
         { x in self.centerX(x) }
     }
 
     @objc(centerXTo)
     @available(swift, obsoleted: 1, renamed: "centerXTo(_:offset:)")
-    var centerXToObjc: (_ anchor: NSLayoutXAxisAnchor?, _ offset: CGFloat) -> Layout {
+    var centerXToObjc: (_ anchor: NSLayoutXAxisAnchor?, _ offset: CGFloat) -> LayoutBox {
         { anchor, offset in self.centerXTo(anchor, offset: offset) }
     }
 
     @objc(centerXGreaterThanOrTo)
     @available(swift, obsoleted: 1, renamed: "centerXGreaterThanOrTo(_:offset:)")
-    var centerXGreaterThanOrToObjc: (_ anchor: NSLayoutXAxisAnchor?, _ offset: CGFloat) -> Layout {
+    var centerXGreaterThanOrToObjc: (_ anchor: NSLayoutXAxisAnchor?, _ offset: CGFloat) -> LayoutBox {
         { anchor, offset in self.centerXGreaterThanOrTo(anchor, offset: offset) }
     }
 
     @objc(centerXLessThanOrTo)
     @available(swift, obsoleted: 1, renamed: "centerXLessThanOrTo(_:offset:)")
-    var centerXLessThanOrToObjc: (_ anchor: NSLayoutXAxisAnchor?, _ offset: CGFloat) -> Layout {
+    var centerXLessThanOrToObjc: (_ anchor: NSLayoutXAxisAnchor?, _ offset: CGFloat) -> LayoutBox {
         { anchor, offset in self.centerXLessThanOrTo(anchor, offset: offset) }
     }
 
     // MARK: - CenterY
     @objc(centerY)
     @available(swift, obsoleted: 1, renamed: "centerY(_:)")
-    var centerYObjc: (_ y: CGFloat) -> Layout {
+    var centerYObjc: (_ y: CGFloat) -> LayoutBox {
         { y in self.centerY(y) }
     }
 
     @objc(centerYTo)
     @available(swift, obsoleted: 1, renamed: "centerYTo(_:offset:)")
-    var centerYToObjc: (_ anchor: NSLayoutYAxisAnchor?, _ offset: CGFloat) -> Layout {
+    var centerYToObjc: (_ anchor: NSLayoutYAxisAnchor?, _ offset: CGFloat) -> LayoutBox {
         { anchor, offset in self.centerYTo(anchor, offset: offset) }
     }
 
     @objc(centerYGreaterThanOrTo)
     @available(swift, obsoleted: 1, renamed: "centerYGreaterThanOrTo(_:offset:)")
-    var centerYGreaterThanOrToObjc: (_ anchor: NSLayoutYAxisAnchor?, _ offset: CGFloat) -> Layout {
+    var centerYGreaterThanOrToObjc: (_ anchor: NSLayoutYAxisAnchor?, _ offset: CGFloat) -> LayoutBox {
         { anchor, offset in self.centerYGreaterThanOrTo(anchor, offset: offset) }
     }
 
     @objc(centerYLessThanOrTo)
     @available(swift, obsoleted: 1, renamed: "centerYLessThanOrTo(_:offset:)")
-    var centerYLessThanOrToObjc: (_ anchor: NSLayoutYAxisAnchor?, _ offset: CGFloat) -> Layout {
+    var centerYLessThanOrToObjc: (_ anchor: NSLayoutYAxisAnchor?, _ offset: CGFloat) -> LayoutBox {
         { anchor, offset in self.centerYLessThanOrTo(anchor, offset: offset) }
     }
 
     // MARK: - Center
     @objc(centerOffset)
     @available(swift, obsoleted: 1, renamed: "centerOffset(x:y:)")
-    var centerOffsetObjc: (_ x: CGFloat, _ y: CGFloat) -> Layout {
+    var centerOffsetObjc: (_ x: CGFloat, _ y: CGFloat) -> LayoutBox {
         { x, y in self.centerOffset(x: x, y: y) }
     }
 
     // MARK: - Top
     @objc(top)
     @available(swift, obsoleted: 1, renamed: "top(_:)")
-    var topObjc: (_ top: CGFloat) -> Layout {
+    var topObjc: (_ top: CGFloat) -> LayoutBox {
         { top in self.top(top) }
     }
 
     @objc(topTo)
     @available(swift, obsoleted: 1, renamed: "topTo(_:offset:)")
-    var topToObjc: (_ anchor: NSLayoutYAxisAnchor?, _ offset: CGFloat) -> Layout {
+    var topToObjc: (_ anchor: NSLayoutYAxisAnchor?, _ offset: CGFloat) -> LayoutBox {
         { anchor, offset in self.topTo(anchor, offset: offset) }
     }
 
     @objc(topGreaterThanOrTo)
     @available(swift, obsoleted: 1, renamed: "topGreaterThanOrTo(_:offset:)")
-    var topGreaterThanOrToObjc: (_ anchor: NSLayoutYAxisAnchor?, _ offset: CGFloat) -> Layout {
+    var topGreaterThanOrToObjc: (_ anchor: NSLayoutYAxisAnchor?, _ offset: CGFloat) -> LayoutBox {
         { anchor, offset in self.topGreaterThanOrTo(anchor, offset: offset) }
     }
 
     @objc(topLessThanOrTo)
     @available(swift, obsoleted: 1, renamed: "topLessThanOrTo(_:offset:)")
-    var topLessThanOrToObjc: (_ anchor: NSLayoutYAxisAnchor?, _ offset: CGFloat) -> Layout {
+    var topLessThanOrToObjc: (_ anchor: NSLayoutYAxisAnchor?, _ offset: CGFloat) -> LayoutBox {
         { anchor, offset in self.topLessThanOrTo(anchor, offset: offset) }
     }
 
     // MARK: - Leading
     @objc(leading)
     @available(swift, obsoleted: 1, renamed: "leading(_:)")
-    var leadingObjc: (_ leading: CGFloat) -> Layout {
+    var leadingObjc: (_ leading: CGFloat) -> LayoutBox {
         { leading in self.leading(leading) }
     }
 
     @objc(leadingTo)
     @available(swift, obsoleted: 1, renamed: "leadingTo(_:offset:)")
-    var leadingToObjc: (_ anchor: NSLayoutXAxisAnchor?, _ offset: CGFloat) -> Layout {
+    var leadingToObjc: (_ anchor: NSLayoutXAxisAnchor?, _ offset: CGFloat) -> LayoutBox {
         { anchor, offset in self.leadingTo(anchor, offset: offset) }
     }
 
     @objc(leadingGreaterThanOrTo)
     @available(swift, obsoleted: 1, renamed: "leadingGreaterThanOrTo(_:offset:)")
-    var leadingGreaterThanOrToObjc: (_ anchor: NSLayoutXAxisAnchor?, _ offset: CGFloat) -> Layout {
+    var leadingGreaterThanOrToObjc: (_ anchor: NSLayoutXAxisAnchor?, _ offset: CGFloat) -> LayoutBox {
         { anchor, offset in self.leadingGreaterThanOrTo(anchor, offset: offset) }
     }
 
     @objc(leadingLessThanOrTo)
     @available(swift, obsoleted: 1, renamed: "leadingLessThanOrTo(_:offset:)")
-    var leadingLessThanOrToObjc: (_ anchor: NSLayoutXAxisAnchor?, _ offset: CGFloat) -> Layout {
+    var leadingLessThanOrToObjc: (_ anchor: NSLayoutXAxisAnchor?, _ offset: CGFloat) -> LayoutBox {
         { anchor, offset in self.leadingLessThanOrTo(anchor, offset: offset) }
     }
 
     // MARK: - Bottom
     @objc(bottom)
     @available(swift, obsoleted: 1, renamed: "bottom(_:)")
-    var bottomObjc: (_ bottom: CGFloat) -> Layout {
+    var bottomObjc: (_ bottom: CGFloat) -> LayoutBox {
         { bottom in self.bottom(bottom) }
     }
 
     @objc(bottomTo)
     @available(swift, obsoleted: 1, renamed: "bottomTo(_:offset:)")
-    var bottomToObjc: (_ anchor: NSLayoutYAxisAnchor?, _ offset: CGFloat) -> Layout {
+    var bottomToObjc: (_ anchor: NSLayoutYAxisAnchor?, _ offset: CGFloat) -> LayoutBox {
         { anchor, offset in self.bottomTo(anchor, offset: offset) }
     }
 
     @objc(bottomGreaterThanOrTo)
     @available(swift, obsoleted: 1, renamed: "bottomGreaterThanOrTo(_:offset:)")
-    var bottomGreaterThanOrToObjc: (_ anchor: NSLayoutYAxisAnchor?, _ offset: CGFloat) -> Layout {
+    var bottomGreaterThanOrToObjc: (_ anchor: NSLayoutYAxisAnchor?, _ offset: CGFloat) -> LayoutBox {
         { anchor, offset in self.bottomGreaterThanOrTo(anchor, offset: offset) }
     }
 
     @objc(bottomLessThanOrTo)
     @available(swift, obsoleted: 1, renamed: "bottomLessThanOrTo(_:offset:)")
-    var bottomLessThanOrToObjc: (_ anchor: NSLayoutYAxisAnchor?, _ offset: CGFloat) -> Layout {
+    var bottomLessThanOrToObjc: (_ anchor: NSLayoutYAxisAnchor?, _ offset: CGFloat) -> LayoutBox {
         { anchor, offset in self.bottomLessThanOrTo(anchor, offset: offset) }
     }
 
     // MARK: - Trailing
     @objc(trailing)
     @available(swift, obsoleted: 1, renamed: "trailing(_:)")
-    var trailingObjc: (_ trailing: CGFloat) -> Layout {
+    var trailingObjc: (_ trailing: CGFloat) -> LayoutBox {
         { trailing in self.trailing(trailing) }
     }
 
     @objc(trailingTo)
     @available(swift, obsoleted: 1, renamed: "trailingTo(_:offset:)")
-    var trailingToObjc: (_ anchor: NSLayoutXAxisAnchor?, _ offset: CGFloat) -> Layout {
+    var trailingToObjc: (_ anchor: NSLayoutXAxisAnchor?, _ offset: CGFloat) -> LayoutBox {
         { anchor, offset in self.trailingTo(anchor, offset: offset) }
     }
 
     @objc(trailingGreaterThanOrTo)
     @available(swift, obsoleted: 1, renamed: "trailingGreaterThanOrTo(_:offset:)")
-    var trailingGreaterThanOrToObjc: (_ anchor: NSLayoutXAxisAnchor?, _ offset: CGFloat) -> Layout {
+    var trailingGreaterThanOrToObjc: (_ anchor: NSLayoutXAxisAnchor?, _ offset: CGFloat) -> LayoutBox {
         { anchor, offset in self.trailingGreaterThanOrTo(anchor, offset: offset) }
     }
 
     @objc(trailingLessThanOrTo)
     @available(swift, obsoleted: 1, renamed: "trailingLessThanOrTo(_:offset:)")
-    var trailingLessThanOrToObjc: (_ anchor: NSLayoutXAxisAnchor?, _ offset: CGFloat) -> Layout {
+    var trailingLessThanOrToObjc: (_ anchor: NSLayoutXAxisAnchor?, _ offset: CGFloat) -> LayoutBox {
         { anchor, offset in self.trailingLessThanOrTo(anchor, offset: offset) }
     }
 
     // MARK: - Height
     @objc(height)
     @available(swift, obsoleted: 1, renamed: "height(_:)")
-    var heightObjc: (_ height: CGFloat) -> Layout {
+    var heightObjc: (_ height: CGFloat) -> LayoutBox {
         { height in self.height(height) }
     }
 
     @objc(minHeight)
     @available(swift, obsoleted: 1, renamed: "minHeight(_:)")
-    var minHeightObjc: (_ height: CGFloat) -> Layout {
+    var minHeightObjc: (_ height: CGFloat) -> LayoutBox {
         { height in self.minHeight(height) }
     }
 
     @objc(maxHeight)
     @available(swift, obsoleted: 1, renamed: "maxHeight(_:)")
-    var maxHeightObjc: (_ height: CGFloat) -> Layout {
+    var maxHeightObjc: (_ height: CGFloat) -> LayoutBox {
         { height in self.maxHeight(height) }
     }
 
     // MARK: - Width
     @objc(width)
     @available(swift, obsoleted: 1, renamed: "width(_:)")
-    var widthObjc: (_ width: CGFloat) -> Layout {
+    var widthObjc: (_ width: CGFloat) -> LayoutBox {
         { width in self.width(width) }
     }
 
     @objc(minWidth)
     @available(swift, obsoleted: 1, renamed: "minWidth(_:)")
-    var minWidthObjc: (_ width: CGFloat) -> Layout {
+    var minWidthObjc: (_ width: CGFloat) -> LayoutBox {
         { width in self.minWidth(width) }
     }
 
     @objc(maxWidth)
     @available(swift, obsoleted: 1, renamed: "maxWidth(_:)")
-    var maxWidthObjc: (_ width: CGFloat) -> Layout {
+    var maxWidthObjc: (_ width: CGFloat) -> LayoutBox {
         { width in self.maxWidth(width) }
     }
 
     // MARK: - Size
     @objc(size)
     @available(swift, obsoleted: 1, renamed: "size(width:height:)")
-    var sizeObjc: (_ width: CGFloat, _ height: CGFloat) -> Layout {
+    var sizeObjc: (_ width: CGFloat, _ height: CGFloat) -> LayoutBox {
         { width, height in self.size(w: width, h: height) }
     }
 
     @objc(square)
     @available(swift, obsoleted: 1, renamed: "square(_:)")
-    var squareObjc: (_ wh: CGFloat) -> Layout {
+    var squareObjc: (_ wh: CGFloat) -> LayoutBox {
         { wh in self.square(wh) }
     }
 
     // MARK: - Edges
     @objc(edges)
     @available(swift, obsoleted: 1, renamed: "edges(top:leading:bottom:trailing:)")
-    var edgesObjc: (_ top: CGFloat, _ leading: CGFloat, _ bottom: CGFloat, _ trailing: CGFloat) -> Layout {
+    var edgesObjc: (_ top: CGFloat, _ leading: CGFloat, _ bottom: CGFloat, _ trailing: CGFloat) -> LayoutBox {
         { top, leading, bottom, trailing in self.edges(top: top, leading: leading, bottom: bottom, trailing: trailing) }
     }
 
     @objc(allEdges)
     @available(swift, obsoleted: 1, renamed: "allEdges(_:)")
-    var allEdgesObjc: (_ inset: CGFloat) -> Layout {
+    var allEdgesObjc: (_ inset: CGFloat) -> LayoutBox {
         { inset in self.allEdges(inset) }
     }
 
@@ -698,19 +698,19 @@ public extension Layout {
 
     @objc(center)
     @available(swift, obsoleted: 1, renamed: "center()")
-    var centerObjc: () -> Layout {
+    var centerObjc: () -> LayoutBox {
         { self.center() }
     }
 
     @objc(edgesZero)
     @available(swift, obsoleted: 1, renamed: "edgesZero()")
-    var edgesZeroObjc: () -> Layout {
+    var edgesZeroObjc: () -> LayoutBox {
         { self.edgesZero() }
     }
 
     @objc(clear)
     @available(swift, obsoleted: 1, renamed: "clear()")
-    var clearObjc: () -> Layout {
+    var clearObjc: () -> LayoutBox {
         { self.clear() }
     }
 
@@ -722,13 +722,13 @@ public extension Layout {
 
     @objc(heightTo)
     @available(swift, obsoleted: 1, renamed: "heightTo(_:)")
-    var heightToObjc: (_ dimension: NSLayoutDimension) -> Layout {
+    var heightToObjc: (_ dimension: NSLayoutDimension) -> LayoutBox {
         { dimension in self.heightTo(dimension) }
     }
 
     @objc(widthTo)
     @available(swift, obsoleted: 1, renamed: "widthTo(_:)")
-    var widthToObjc: (_ dimension: NSLayoutDimension) -> Layout {
+    var widthToObjc: (_ dimension: NSLayoutDimension) -> LayoutBox {
         { dimension in self.widthTo(dimension) }
     }
 
@@ -736,25 +736,25 @@ public extension Layout {
 
     @objc(addTo)
     @available(swift, obsoleted: 1, renamed: "addTo(_:)")
-    var addToObjc: (_ superview: UIView) -> Layout {
+    var addToObjc: (_ superview: UIView) -> LayoutBox {
         { superview in self.addTo(superview) }
     }
 
     @objc(addToFull)
     @available(swift, obsoleted: 1, renamed: "addToFull(_:)")
-    var addToFullObjc: (_ superview: UIView) -> Layout {
+    var addToFullObjc: (_ superview: UIView) -> LayoutBox {
         { superview in self.addToFull(superview) }
     }
 
     @objc(addSubview)
     @available(swift, obsoleted: 1, renamed: "addSubview(_:)")
-    var addSubviewObjc: (_ subview: UIView) -> Layout {
+    var addSubviewObjc: (_ subview: UIView) -> LayoutBox {
         { subview in self.addSubview(subview) }
     }
 
     @objc(addSubviewLayout)
     @available(swift, obsoleted: 1, renamed: "addSubviewLayout(_:layout:)")
-    var addSubviewLayoutObjc: (_ subview: UIView, _ layout: (Layout) -> Void) -> Layout {
+    var addSubviewLayoutObjc: (_ subview: UIView, _ layout: (LayoutBox) -> Void) -> LayoutBox {
         { subview, layout in self.addSubviewLayout(subview, layout: layout) }
     }
 }
