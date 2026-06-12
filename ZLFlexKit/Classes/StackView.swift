@@ -850,7 +850,8 @@ open class VStackView: StackView {
         get { .vertical }
         set {}
     }
-    public override init(builder: () -> [any StackViewDSL]) {
+    
+    public override init(@StackViewBuilder builder: () -> [StackViewDSL]) {
         super.init(builder: builder)
     }
     required public init?(coder: NSCoder) {
@@ -863,11 +864,10 @@ open class HStackView: StackView {
         get { .horizontal }
         set {}
     }
-    public override init(builder: () -> [any StackViewDSL]) {
-        super.init(builder: builder)
-       
-    }
     
+    public override init(@StackViewBuilder builder: () -> [StackViewDSL]) {
+        super.init(builder: builder)
+    }
     required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
