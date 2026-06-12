@@ -191,37 +191,37 @@ public  class FlexItem: NSObject {
     
     public var height: CGFloat = 0 {
         didSet {
-            view?.layout.height(height)
+            view?.box.height(height)
         }
     }
     public var width: CGFloat = 0 {
         didSet {
-            view?.layout.width(width)
+            view?.box.width(width)
         }
     }
     public var minWidth: CGFloat = 0 {
         didSet {
-            view?.layout.minWidth(minWidth)
+            view?.box.minWidth(minWidth)
         }
     }
     public var maxWidth: CGFloat = 0 {
         didSet {
-            view?.layout.maxWidth(maxWidth)
+            view?.box.maxWidth(maxWidth)
         }
     }
     public var minHeight: CGFloat = 0 {
         didSet {
-            view?.layout.minHeight(minHeight)
+            view?.box.minHeight(minHeight)
         }
     }
     public var maxHeight: CGFloat = 0 {
         didSet {
-            view?.layout.maxHeight(maxHeight)
+            view?.box.maxHeight(maxHeight)
         }
     }
     public var size: CGSize = .zero {
         didSet {
-            view?.layout.size(w: size.width, h: size.height)
+            view?.box.size(w: size.width, h: size.height)
         }
     }
     

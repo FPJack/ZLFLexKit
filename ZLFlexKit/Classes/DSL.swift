@@ -77,11 +77,11 @@ extension Double: SpacerType {
 }
 
 ///允许可选类型的view
-extension Optional: StackViewDSL where Wrapped: UIView {
+extension Optional: StackViewDSL where Wrapped: FlexType {
    public func getDslView() -> UIView? {
         switch self {
         case .some(let view):
-            return view
+            return view.view
         case .none:
             return nil
         }

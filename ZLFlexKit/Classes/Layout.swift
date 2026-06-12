@@ -91,6 +91,8 @@ public class Layout: NSObject {
         if let anchor = anchor {
             addConstraint(view?.centerXAnchor.constraint(equalTo: anchor, constant: offset.cgFloat))
         }
+        
+        
         return self
     }
 
@@ -402,7 +404,7 @@ public class Layout: NSObject {
     @discardableResult
     public func addSubviewLayout(_ subview: UIView, layout: (Layout) -> Void) -> Self {
         view?.addSubview(subview)
-        layout(subview.layout)
+        layout(subview.box)
         return self
     }
 }
@@ -416,7 +418,8 @@ private var zlTapActionKey:   UInt8 = 0
 public extension UIView {
 
     /// 关联的 Layout 对象
-   @objc var layout: Layout {
+    /// box or geo
+   @objc var box: Layout {
         if let obj = objc_getAssociatedObject(self, &zlLayoutKey) as? Layout {
             return obj
         }

@@ -83,7 +83,7 @@
         .addView(f3);
     
     [box addArrangedSubview:sv2];
-    self.view.layout.lastConstraint().constant = 200; // 修改最后一个约束为 200，演示动态更新布局
+    self.view.box.lastConstraint().constant = 200; // 修改最后一个约束为 200，演示动态更新布局
     
     
     

@@ -243,7 +243,7 @@ open class StackView: UIView {
         scrollView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         scrollView.addSubview(self)
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.layout.edgesZero()
+        self.box.edgesZero()
         let axisLayout: NSLayoutConstraint
         if self.axis == .horizontal {
             axisLayout = self.heightAnchor.constraint(equalTo: scrollView.heightAnchor)

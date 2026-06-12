@@ -679,30 +679,30 @@ class ZLLayoutDemoVC: UIViewController {
         let box1 = UIView()
         box1.backgroundColor = colors[0]; box1.layer.cornerRadius = 6
         view.addSubview(box1)
-        box1.layout.top(80).leading(16).size(w: 80, h: 80)
+        box1.box.top(80).leading(16).size(w: 80, h: 80)
 
         // ② addTo 链式
         let box2 = UIView()
         box2.backgroundColor = colors[1]; box2.layer.cornerRadius = 6
-        box2.layout.addTo(view).top(80).leading(120).size(w: 80, h: 80)
+        box2.box.addTo(view).top(80).leading(120).size(w: 80, h: 80)
 
         // ③ addToFull — 贴满父视图
         let container = UIView()
         container.backgroundColor = .compatGray5; container.layer.cornerRadius = 8
         view.addSubview(container)
-        container.layout.top(180).leading(16).trailing(16).height(80)
+        container.box.top(180).leading(16).trailing(16).height(80)
         let inner = UIView()
         inner.backgroundColor = colors[2].withAlphaComponent(0.7)
-        inner.layout.addToFull(container)
+        inner.box.addToFull(container)
 
         // ④ centerX / centerY
         let box4 = UIView()
         box4.backgroundColor = colors[3]; box4.layer.cornerRadius = 6
         view.addSubview(box4)
-        box4.layout.top(280).centerX().size(w: 80, h: 44)
+        box4.box.top(280).centerX().size(w: 80, h: 44)
 
         // ⑤ addSubviewLayout
-        view.layout.addSubviewLayout(UIView()) { layout in
+        view.box.addSubviewLayout(UIView()) { layout in
             layout.view?.backgroundColor = colors[4]
             layout.view?.layer.cornerRadius = 6
             layout.top(340).leading(16).size(w: 120, h: 44)
@@ -728,7 +728,7 @@ class ZLLayoutDemoVC: UIViewController {
         ✅ 所有数字参数均支持 Int / Float / Double / CGFloat
         """
         view.addSubview(label)
-        label.layout.top(400).leading(16).trailing(16)
+        label.box.top(400).leading(16).trailing(16)
     }
 }
 
@@ -969,7 +969,7 @@ class WrapScrollVerticalDemoVC: UIViewController {
 
         card.translatesAutoresizingMaskIntoConstraints = false
         wrapper.addSubview(card)
-        card.layout.edgesZero()
+        card.box.edgesZero()
 
         return wrapper
     }
@@ -1417,7 +1417,7 @@ class PerfZLStackViewVC: UIViewController {
                     cellSV.addArrangedSubview(_bTitle(i, j))
                     cellSV.addArrangedSubview(_bSub())
                     rowSV.addArrangedSubview(cellSV)
-                    rowSV.layout.height(50)
+                    rowSV.box.height(50)
                 }
                 outerSV.addArrangedSubview(rowSV)
             }
@@ -1493,7 +1493,7 @@ class PerfUIStackViewVC: UIViewController {
                     cellSV.addArrangedSubview(_bSub())
                     rowSV.addArrangedSubview(cellSV)
                 }
-                rowSV.layout.height(50)
+                rowSV.box.height(50)
                 outerSV.addArrangedSubview(rowSV)
             }
         }
