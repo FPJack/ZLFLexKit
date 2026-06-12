@@ -753,9 +753,13 @@ extension StackView {
     func addViews(with builder: () -> [StackViewDSL]) {
         let arr = builder()
         arr.forEach { component in
-            if let view = component as? UIView {
+            if let view = component.getDslView() {
                 addView(view)
+            }else if let item = component as? Double {
+                insertSpacing(CGFloat(item))
             }else if let item = component as? Int {
+                insertSpacing(CGFloat(item))
+            }else if let item = component as? Float {
                 insertSpacing(CGFloat(item))
             }else if let item = component as? FlexItem {
                 addView(item)

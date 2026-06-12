@@ -6,8 +6,21 @@
 //
 
 import Foundation
-public protocol StackViewDSL {}
-extension UIView: StackViewDSL {}
+
+public protocol StackViewDSL {
+    func getDslView() -> UIView?
+}
+extension StackViewDSL {
+   public func getDslView() -> UIView? {
+        return nil
+    }
+}
+
+extension UIView: StackViewDSL {
+   public func getDslView() -> UIView? {
+        self
+    }
+}
 extension Float: StackViewDSL {}
 extension Int: StackViewDSL {}
 extension Double: StackViewDSL {}
@@ -20,8 +33,14 @@ public enum Spacer {
     public init() {
         self = .normal
     }
-    public init(value: Float) {
+    public init(_ value: Float) {
         self = .value(value)
+    }
+    public init(min: Float) {
+        self = .min(min)
+    }
+    public init(max: Float) {
+        self = .max(max)
     }
 }
 extension Spacer: StackViewDSL {}
@@ -54,6 +73,18 @@ extension Double: SpacerType {
     }
     public var maxSpacing: Spacer {
         Spacer.max(Float(self))
+    }
+}
+
+///允许可选类型的view
+extension Optional: StackViewDSL where Wrapped: UIView {
+   public func getDslView() -> UIView? {
+        switch self {
+        case .some(let view):
+            return view
+        case .none:
+            return nil
+        }
     }
 }
 

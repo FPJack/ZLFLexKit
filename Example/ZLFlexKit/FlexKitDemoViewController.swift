@@ -999,6 +999,8 @@ class DSLDemoVC: UIViewController {
             UIView.colored(colors[1], text: "B", size: CGSize(width: 60, height: 36))
             Spacer()                                    // 弹性空白
             UIView.colored(colors[2], text: "C", size: CGSize(width: 44, height: 36))
+            
+            
         }
         .justify(.fill)
         .align(.center)
